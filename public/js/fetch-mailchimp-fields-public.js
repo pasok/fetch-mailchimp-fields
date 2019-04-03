@@ -1,32 +1,52 @@
-(function( $ ) {
-	'use strict';
+( function() {
+    'use strict';
 
-	/**
-	 * All of the code for your public-facing JavaScript source
-	 * should reside in this file.
-	 *
-	 * Note: It has been assumed you will write jQuery code here, so the
-	 * $ function reference has been prepared for usage within the scope
-	 * of this function.
-	 *
-	 * This enables you to define handlers, for when the DOM is ready:
-	 *
-	 * $(function() {
-	 *
-	 * });
-	 *
-	 * When the window is loaded:
-	 *
-	 * $( window ).load(function() {
-	 *
-	 * });
-	 *
-	 * ...and/or other possibilities.
-	 *
-	 * Ideally, it is not considered best practise to attach more than a
-	 * single DOM-ready or window-load handler for a particular page.
-	 * Although scripts in the WordPress core, Plugins and Themes may be
-	 * practising this, we should strive to set a better example in our own work.
-	 */
+        var template = `<div class="mailchimp_fields">
+            <h6>Fetch Mailchimp Field</h6>
+            <form class="mailchimp_fields_form" method="post" @submit.prevent="fetchMailchimpField()">
+                <input type="text" name="email" v-model="email" size="40">
+                <input type="hidden" name="action" v-model="action">
+                <button>
+                    <span v-show="isLoading === false">Get Details</span>
+                    <span v-show="isLoading === true">Getting Details</span>
+                </button>
+            </form>
+            <div class="result">
+                <span class="text-error" v-if="(apiResponse !== null) && apiResponse.hasOwnProperty('error')">
+                    {{ apiResponse.error }}
+                </span>
+                <span v-else>{{ apiResponse }}</span>
+            </div>
+        </div>`;
 
-})( jQuery );
+        var vm = new Vue({
+            el: '#fetch-mailchimp-fields-app',
+            template: template,
+            data: {
+                action: 'fetch_mailchimp_fields',
+                email: 'topgun_1@sent.com',
+                apiResponse: null,
+                isLoading: false,
+            },
+            methods: {
+                fetchMailchimpField: function () {
+                    this.isLoading = true;
+                    this.apiResponse = null;
+
+                    var formData  = new FormData();
+                    formData.append('action', this.action);
+                    formData.append('email', this.email);
+
+                    fetch(window.ajaxurl, { method: 'POST', body: formData })
+                        .then( function(response) { return response.json() })
+                        .then( function(json) {
+                            console.log(json);
+                            this.apiResponse = json;
+                            this.isLoading = false;
+                        }.bind(this) );
+                }
+            },
+        });
+
+
+})();

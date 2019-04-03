@@ -122,6 +122,12 @@ class Fetch_Mailchimp_Fields {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-fetch-mailchimp-fields-public.php';
 
+		/**
+		 * 3rd-party library/wrapper for mailchimp api
+		 * ref: https://github.com/drewm/mailchimp-api
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/MailChimp.php';
+
 		$this->loader = new Fetch_Mailchimp_Fields_Loader();
 
 	}

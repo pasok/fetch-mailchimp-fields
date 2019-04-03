@@ -2,3 +2,7 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+
+.mailchimp_fields .text-error {
+    color: #dc3545;
+}
