@@ -33,13 +33,6 @@ class Fetch_Mailchimp_Fields_Public {
 
     private $shortcode_name    = 'fetch_mailchimp_fields';
 
-    // TODO:: move these variables into an options page in admin panel
-    // ref: https://mailchimp.com/help/find-audience-id
-    private $mailchimp_list_id = '';
-
-    // ref : https://mailchimp.com/help/about-api-keys
-    private $mailchimp_api_key = '';
-
     /**
      * The version of this plugin.
      *
@@ -80,18 +73,23 @@ class Fetch_Mailchimp_Fields_Public {
      * ref: https://developer.mailchimp.com/documentation/mailchimp/reference/lists/members
      */
     public function fetch_mailchimp_fields() {
-        if (trim($_POST['email']) == '') {
+        $email = trim($_POST['email']);
+        if ($email == '') {
             exit(json_encode(['error' => 'Email is required']));
         }
 
-        $listId         = $this->mailchimp_list_id;
-        $apiKey         = $this->mailchimp_api_key;
-        $mailchimp      = new \DrewM\MailChimp\MailChimp($apiKey);
-        $subscriberHash = $mailchimp->subscriberHash(trim($_POST['email']));
-        $result         = $mailchimp->get("lists/{$listId}/members/{$subscriberHash}");
+        try {
+            $listId         = get_option('mailchimp_config_list_id');
+            $apiKey         = get_option('mailchimp_config_api_key');
+            $mailchimp      = new \DrewM\MailChimp\MailChimp($apiKey);
+            $subscriberHash = $mailchimp->subscriberHash($email);
+            $result         = $mailchimp->get("lists/{$listId}/members/{$subscriberHash}");
+        } catch(Exception $e) {
+            exit(json_encode(['error' => $e->getMessage()]));
+        }
 
         if (!isset($result['merge_fields'])) {
-            exit(json_encode(['error' => 'Failed to get information']));
+            exit(json_encode(['error' => 'Failed to get information from mailchimp']));
         }
 
         //TODO:: add crosschecks for error responses from mailchimp api

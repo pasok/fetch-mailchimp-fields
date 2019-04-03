@@ -24,7 +24,7 @@
             template: template,
             data: {
                 action: 'fetch_mailchimp_fields',
-                email: null,
+                email: '',
                 apiResponse: null,
                 isLoading: false,
             },
