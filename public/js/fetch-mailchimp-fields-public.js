@@ -15,16 +15,11 @@
                 <span class="text-error" v-if="(apiResponse !== null) && apiResponse.hasOwnProperty('error')">
                     {{ apiResponse.error }}
                 </span>
-                <table class="field-list" v-else-if="(apiResponse !== null)">
-                    <tr>
-                        <th class="merge-field">Field</th>
-                        <th class="merge-value">Value</th>
-                    </tr>
-                    <tr v-for="(value, key) in apiResponse">
-                        <td>{{ key }}</td>
-                        <td>{{ value }}</td>
-                    </tr>
-                </table>
+
+                <span class="field" v-else-if="(apiResponse !== null) && apiResponse.hasOwnProperty('MERGE7')">
+                    Your Bedner's Bucks balance is: <span class="value">{{ apiResponse.MERGE7 }}</span>
+                </span>
+
                 <span v-else></span>
             </div>
         </div>`;

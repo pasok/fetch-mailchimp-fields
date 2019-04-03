@@ -88,8 +88,8 @@ class Fetch_Mailchimp_Fields_Public {
             exit(json_encode(['error' => $e->getMessage()]));
         }
 
-        if (!isset($result['merge_fields'])) {
-            exit(json_encode(['error' => 'Failed to get information from mailchimp']));
+        if (!isset($result['merge_fields']) || !isset($result['merge_fields']['MERGE7'])) {
+            exit(json_encode(['error' => "Failed to get Bedner's Bucks balance"]));
         }
 
         //TODO:: add crosschecks for error responses from mailchimp api

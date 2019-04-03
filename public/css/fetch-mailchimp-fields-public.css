@@ -10,19 +10,8 @@
     background: #0073aa !important;
     filter: brightness(110%);
 }
-.mailchimp_fields table.field-list {
-    max-width: 35em;
-    margin-top: 0.5em;
-    font-size: 0.71111em;
-}
-.mailchimp_fields table.field-list th {
-    text-align: left;
-    min-width: 8em;
-    border: solid 1px #ccc
-}
-.mailchimp_fields table.field-list td {
-    text-align: left;
-    border: solid 1px #ccc
+.mailchimp_fields .field .value {
+    font-weight: 600;
 }
 
 /* ref: https://stephanwagner.me/only-css-loading-spinner */
