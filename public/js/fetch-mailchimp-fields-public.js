@@ -30,20 +30,20 @@
             },
             methods: {
                 fetchMailchimpField: function () {
-                    this.isLoading = true;
+                    this.isLoading   = true;
                     this.apiResponse = null;
 
-                    var formData  = new FormData();
-                    formData.append('action', this.action);
-                    formData.append('email', this.email);
+                    const headers    = {'Content-Type': 'application/x-www-form-urlencoded'};
+                    const params     = new URLSearchParams();
+                    params.append('action', this.action);
+                    params.append('email', this.email);
 
-                    fetch(window.ajaxurl, { method: 'POST', body: formData })
-                        .then( function(response) { return response.json() })
-                        .then( function(json) {
-                            console.log(json);
-                            this.apiResponse = json;
+                    fetch(window.ajaxurl, { method: 'POST', body: params, headers: headers })
+                        .then(response => { return response.json() })
+                        .then(jsonResponse => {
+                            this.apiResponse = jsonResponse;
                             this.isLoading = false;
-                        }.bind(this) );
+                        });
                 }
             },
         });

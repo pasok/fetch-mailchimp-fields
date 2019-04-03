@@ -56,7 +56,7 @@ class Fetch_Mailchimp_Fields_Public {
 
         add_shortcode( $this->shortcode_name, [$this, 'shortcode'] );
         add_action('wp_ajax_fetch_mailchimp_fields', array($this, 'fetch_mailchimp_fields'));
-        // add_action('wp_ajax_nopriv_fetch_mailchimp_fields', [$this, 'fetch_mailchimp_fields'] );
+        add_action('wp_ajax_nopriv_fetch_mailchimp_fields', [$this, 'fetch_mailchimp_fields'] );
     }
 
     /**
