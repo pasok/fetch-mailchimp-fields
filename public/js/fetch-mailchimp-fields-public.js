@@ -4,18 +4,28 @@
         var template = `<div class="mailchimp_fields">
             <h6>Fetch Mailchimp Field</h6>
             <form class="mailchimp_fields_form" method="post" @submit.prevent="fetchMailchimpField()">
-                <input type="text" name="email" v-model="email" size="40">
+                <input type="text" name="email" v-model="email" size="60">
                 <input type="hidden" name="action" v-model="action">
-                <button>
+                <a class="button" style="position:relative" @click="fetchMailchimpField">
                     <span v-show="isLoading === false">Get Details</span>
-                    <span v-show="isLoading === true">Getting Details</span>
-                </button>
+                    <span v-show="isLoading === true"><span class="spinner">Getting Details</span> </span>
+                </a>
             </form>
             <div class="result">
                 <span class="text-error" v-if="(apiResponse !== null) && apiResponse.hasOwnProperty('error')">
                     {{ apiResponse.error }}
                 </span>
-                <span v-else>{{ apiResponse }}</span>
+                <table class="field-list" v-else-if="(apiResponse !== null)">
+                    <tr>
+                        <th class="merge-field">Field</th>
+                        <th class="merge-value">Value</th>
+                    </tr>
+                    <tr v-for="(value, key) in apiResponse">
+                        <td>{{ key }}</td>
+                        <td>{{ value }}</td>
+                    </tr>
+                </table>
+                <span v-else></span>
             </div>
         </div>`;
 
@@ -41,8 +51,10 @@
                     fetch(window.ajaxurl, { method: 'POST', body: params, headers: headers })
                         .then(response => { return response.json() })
                         .then(jsonResponse => {
-                            this.apiResponse = jsonResponse;
-                            this.isLoading = false;
+                            setTimeout(() => {
+                                this.apiResponse = jsonResponse;
+                                this.isLoading = false;
+                            }, 300);
                         });
                 }
             },

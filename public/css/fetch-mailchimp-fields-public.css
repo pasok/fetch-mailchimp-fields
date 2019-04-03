@@ -6,3 +6,44 @@
 .mailchimp_fields .text-error {
     color: #dc3545;
 }
+.mailchimp_fields .button:hover {
+    background: #0073aa !important;
+    filter: brightness(110%);
+}
+.mailchimp_fields table.field-list {
+    max-width: 35em;
+    margin-top: 0.5em;
+    font-size: 0.71111em;
+}
+.mailchimp_fields table.field-list th {
+    text-align: left;
+    min-width: 8em;
+    border: solid 1px #ccc
+}
+.mailchimp_fields table.field-list td {
+    text-align: left;
+    border: solid 1px #ccc
+}
+
+/* ref: https://stephanwagner.me/only-css-loading-spinner */
+@keyframes spinner {
+    to {transform: rotate(360deg);}
+}
+.mailchimp_fields .spinner {
+    margin-left: 10px;
+}
+.mailchimp_fields .spinner:before {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 8px;
+    width: 20px;
+    height: 20px;
+    margin-top: -11px;
+    margin-left: 0;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    border-top-color: #ccc;
+    animation: spinner .6s linear infinite;
+}
