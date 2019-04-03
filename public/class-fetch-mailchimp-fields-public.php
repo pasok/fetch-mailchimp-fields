@@ -31,7 +31,9 @@ class Fetch_Mailchimp_Fields_Public {
      */
     private $plugin_name;
 
-    private $shortcode_name    = 'fetch_mailchimp_fields';
+    private $shortcode_name = 'fetch_mailchimp_fields';
+
+    private $shortcode_atts = ['field_name' => 'MERGE7'];
 
     /**
      * The version of this plugin.
@@ -62,10 +64,11 @@ class Fetch_Mailchimp_Fields_Public {
     /**
      * method that generates the html markup of the plugin
      */
-    public function shortcode() {
+    public function shortcode($atts) {
         // if (!is_user_logged_in()) { return false; }
+        $this->shortcode_atts = shortcode_atts($this->shortcode_atts, $atts );
 
-        return "<div id='fetch-mailchimp-fields-app'></div>";
+        return "<div id='fetch-mailchimp-fields-app' data-field-name='{$this->shortcode_atts['field_name']}'></div>";
     }
 
     /**
@@ -74,7 +77,8 @@ class Fetch_Mailchimp_Fields_Public {
      */
     public function fetch_mailchimp_fields() {
         $email = trim($_POST['email']);
-        if ($email == '') {
+        $field_name = trim($_POST['field_name']);
+        if ($email == '' || $field_name == '') {
             exit(json_encode(['error' => 'Email is required']));
         }
 
@@ -88,8 +92,15 @@ class Fetch_Mailchimp_Fields_Public {
             exit(json_encode(['error' => $e->getMessage()]));
         }
 
-        if (!isset($result['merge_fields']) || !isset($result['merge_fields']['MERGE7'])) {
-            exit(json_encode(['error' => "Failed to get Bedner's Bucks balance"]));
+        if (!isset($result['merge_fields']) || sizeof($result['merge_fields']) < 1) {
+            exit(json_encode(['error' => "Failed to fetch information from server"]));
+        }
+        if (!isset($result['merge_fields'][$field_name])) {
+            if($field_name == 'MERGE7') {
+                exit(json_encode(['error' => "Failed to get Bedner's Bucks balance"]));
+            } else {
+                exit(json_encode(['error' => "Failed to get information from server"]));
+            }
         }
 
         //TODO:: add crosschecks for error responses from mailchimp api
