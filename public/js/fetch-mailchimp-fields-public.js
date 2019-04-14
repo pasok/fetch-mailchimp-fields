@@ -2,9 +2,8 @@
     'use strict';
 
     var template = `<div class="mailchimp_fields">
-        <h6>Fetch Mailchimp Field</h6>
         <form class="mailchimp_fields_form" method="post" @submit.prevent="fetchMailchimpField()">
-            <input type="text" name="email" v-model="email" size="60">
+            <input type="text" name="email" v-model="email" size="60" placeholder="Enter Subscriber Email">
             <input type="hidden" name="action" v-model="action">
             <a class="button" style="position:relative" @click="fetchMailchimpField">
                 <span v-show="isLoading === false">Get Details</span>
@@ -34,7 +33,7 @@
         template: template,
         data: {
             action: 'fetch_mailchimp_fields',
-            email: 'topgun@sent.com',
+            email: '',
             apiResponse: null,
             isLoading: false,
             searchFieldName: null,

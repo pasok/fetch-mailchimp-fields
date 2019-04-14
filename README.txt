@@ -10,4 +10,6 @@ This wordpress plugin fetches merge fields of a subscriber from a mailchimp list
 - Go to MailChimp Config and set following fields
     Mailchimp List Id
     Mailchimp Api Key
-- Place [fetch_mailchimp_fields] in any post/page to display the form
+- Place [fetch_mailchimp_fields] shortcode in any post/page to display the form
+- shortcode accepts field_name attribute.
+    [fetch_mailchimp_fields field_name='FNAME'] will fetch FNAME field

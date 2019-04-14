@@ -81,6 +81,7 @@ class Fetch_Mailchimp_Fields_Public {
         if ($email == '' || $field_name == '') {
             exit(json_encode(['error' => 'Email is required']));
         }
+        //TODO:: add email validation
 
         try {
             $listId         = get_option('mailchimp_config_list_id');
