@@ -2,6 +2,7 @@
 This wordpress plugin fetches merge fields of a subscriber from a mailchimp list
 
 == Installation Steps ==
+- Download latest version of plugin - https://bitbucket.org/pasok/fetch-mailchimp-fields/get/latest.zip
 - Login to admin panel of the wordpress site
 - Go to Plugins -> Add New -> Upload Plugin
     Upload downloaded zipfile
