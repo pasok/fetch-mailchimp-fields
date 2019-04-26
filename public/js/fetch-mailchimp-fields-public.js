@@ -1,30 +1,40 @@
 ( function() {
     'use strict';
 
-    var template = `<div class="mailchimp_fields">
-        <form class="mailchimp_fields_form" method="post" @submit.prevent="fetchMailchimpField()">
-            <input type="text" name="email" v-model="email" size="60" placeholder="Enter Subscriber Email">
+    var template = `<div id="mailchimp-fields" class="mailchimp-fields">
+
+        <form class="mailchimp-fields-form" method="post" @submit.prevent="fetchMailchimpField">
             <input type="hidden" name="action" v-model="action">
-            <a class="button" style="position:relative" @click="fetchMailchimpField">
-                <span v-show="isLoading === false">Get Details</span>
-                <span v-show="isLoading === true"><span class="spinner">Getting Details</span> </span>
-            </a>
+            <div class="input-group">
+                <input type="text" class="input-group-field" name="email" v-model="email" placeholder="Enter Subscriber Email">
+                <button :disabled="isLoading === true" class="input-group-btn btn-sm btn-blue-dark unset-line-height" @click="fetchMailchimpField">
+                        <span v-if="isLoading === false" class="text">Get Details</span>
+                        <span v-else>
+                            <span class="text">Getting Details</span>
+                            <span class="spinner spinner-blue"></span>
+                        </span>
+                </button>
+            </div>
         </form>
-        <div class="result">
-            <span class="text-error" v-if="(apiResponse !== null) && apiResponse.hasOwnProperty('error')">
-                {{ apiResponse.error }}
-            </span>
 
-            <span class="field" v-else-if="(apiResponse !== null) && apiResponse.hasOwnProperty(searchFieldName)">
-                <span class="detail" v-if="searchFieldName === 'MERGE7'">
-                    Your Bedner's Bucks balance is: <span class="value">{{ apiResponse[searchFieldName] }}</span>
-                </span>
-                <span v-else class="detail">
-                    {{ searchFieldName }} : {{ apiResponse[searchFieldName] }}
-                </span>
-            </span>
+        <div class="result text-xs my-1">
+            <div v-if="apiResponse !== null">
+                <span v-if="(apiResponse.hasOwnProperty('error'))" class="text-red" >{{ apiResponse.error }}</span>
 
-            <span v-else></span>
+                <table v-else class="table table-sm table-hover table-bordered">
+                <tbody>
+                    <tr v-for="(value, key) in apiResponse">
+                        <td class="whitespace-no-wrap">{{ key }}</td>
+                        <td>
+                            <pre v-if="isJson(value)" class="bg-transparent border-transparent whitespace-normal font-mono text-xs p-0">
+                                <code class="whitespace-pre-wrap">{{ prettify(value) }}</code>
+                            </pre>
+                            <span v-else class="font-mono text-xs">{{ value }}</span>
+                        </td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
         </div>
     </div>`;
 
@@ -36,30 +46,51 @@
             email: '',
             apiResponse: null,
             isLoading: false,
-            searchFieldName: null,
+            fieldNamesList: null,
         },
         beforeMount: function () {
-            this.searchFieldName = this.$el.attributes['data-field-name'].value;
+            this.fieldNamesList = this.$el.attributes['data-field-names'].value;
         },
         methods: {
             fetchMailchimpField: function () {
+                const headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+                const params  = new URLSearchParams();
+
+                params.append('email', this.email);
+                params.append('action', this.action);
+                params.append('field_names', this.fieldNamesList);
+
                 this.isLoading   = true;
                 this.apiResponse = null;
-
-                const headers    = {'Content-Type': 'application/x-www-form-urlencoded'};
-                const params     = new URLSearchParams();
-                params.append('action', this.action);
-                params.append('email', this.email);
-                params.append('field_name', this.searchFieldName);
-
                 fetch(window.ajaxurl, { method: 'POST', body: params, headers: headers })
                     .then(response => { return response.json() })
                     .then(jsonResponse => {
                         setTimeout(() => {
                             this.apiResponse = jsonResponse;
                             this.isLoading = false;
-                        }, 300);
+                        }, 100);
+                    }).catch((error) => {
+                        setTimeout(() => {
+                            this.apiResponse = null;
+                            this.isLoading = false;
+                            console.log(error);
+                        }, 100);
                     });
+                    //TODO:: catch/show error
+            },
+            isJson: function(item) {
+                if (typeof item === "object" && item !== null) {
+                    return true;
+                }
+                try {
+                    JSON.parse(item);
+                    return true;
+                } catch (e) {
+                    return false;
+                }
+            },
+            prettify: function(input) {
+                return JSON.stringify(input, undefined, 2);
             }
         },
     });

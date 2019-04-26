@@ -33,7 +33,7 @@ class Fetch_Mailchimp_Fields_Public {
 
     private $shortcode_name = 'fetch_mailchimp_fields';
 
-    private $shortcode_atts = ['field_name' => 'MERGE7'];
+    private $shortcode_atts = ['field_names' => null];
 
     /**
      * The version of this plugin.
@@ -62,26 +62,34 @@ class Fetch_Mailchimp_Fields_Public {
     }
 
     /**
-     * method that generates the html markup of the plugin
+     * Generate html markup for the public-facing side of the site.
      */
     public function shortcode($atts) {
         // if (!is_user_logged_in()) { return false; }
         $this->shortcode_atts = shortcode_atts($this->shortcode_atts, $atts );
 
-        return "<div id='fetch-mailchimp-fields-app' data-field-name='{$this->shortcode_atts['field_name']}'></div>";
+        return "<div id='fetch-mailchimp-fields-app' data-field-names='{$this->shortcode_atts['field_names']}'></div>";
     }
 
     /**
      * call mailchimp api to get merge fields of specific user
      * ref: https://developer.mailchimp.com/documentation/mailchimp/reference/lists/members
+     * TODO:: make a class for all mailchimp methods
      */
     public function fetch_mailchimp_fields() {
         $email = trim($_POST['email']);
-        $field_name = trim($_POST['field_name']);
-        if ($email == '' || $field_name == '') {
+        $fieldNames = [];
+
+        //TODO:: add email validation
+        if ($email == '') {
             exit(json_encode(['error' => 'Email is required']));
         }
-        //TODO:: add email validation
+        if (isset($_POST['field_names']) && !empty($_POST['field_names'])) {
+            $fieldNames = array_flip(array_map(function($value) {
+                    return strtoupper(trim($value));
+                }, explode(',', $_POST['field_names'])
+            ));
+        }
 
         try {
             $listId         = get_option('mailchimp_config_list_id');
@@ -89,23 +97,20 @@ class Fetch_Mailchimp_Fields_Public {
             $mailchimp      = new \DrewM\MailChimp\MailChimp($apiKey);
             $subscriberHash = $mailchimp->subscriberHash($email);
             $result         = $mailchimp->get("lists/{$listId}/members/{$subscriberHash}");
+            $serverData     = isset($result['merge_fields']) ? $result['merge_fields'] : [];
         } catch(Exception $e) {
             exit(json_encode(['error' => $e->getMessage()]));
         }
 
-        if (!isset($result['merge_fields']) || sizeof($result['merge_fields']) < 1) {
+        if (empty($serverData) || sizeof($serverData) < 1) {
             exit(json_encode(['error' => "Failed to fetch information from server"]));
         }
-        if (!isset($result['merge_fields'][$field_name])) {
-            if($field_name == 'MERGE7') {
-                exit(json_encode(['error' => "Failed to get Bedner's Bucks balance"]));
-            } else {
-                exit(json_encode(['error' => "Failed to get information from server"]));
-            }
+        if(sizeof($fieldNames) > 0) {
+            exit(json_encode(array_intersect_key($serverData, $fieldNames)));
         }
 
         //TODO:: add crosschecks for error responses from mailchimp api
-        exit(json_encode($result['merge_fields']));
+        exit(json_encode($serverData));
     }
 
     /**
@@ -114,21 +119,7 @@ class Fetch_Mailchimp_Fields_Public {
      * @since    1.0.0
      */
     public function enqueue_styles() {
-
-        /**
-         * This function is provided for demonstration purposes only.
-         *
-         * An instance of this class should be passed to the run() function
-         * defined in Fetch_Mailchimp_Fields_Loader as all of the hooks are defined
-         * in that particular class.
-         *
-         * The Fetch_Mailchimp_Fields_Loader will then create the relationship
-         * between the defined hooks and the functions defined in this
-         * class.
-         */
-
         wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/fetch-mailchimp-fields-public.css', array(), $this->version, 'all' );
-
     }
 
     /**
@@ -137,25 +128,11 @@ class Fetch_Mailchimp_Fields_Public {
      * @since    1.0.0
      */
     public function enqueue_scripts() {
-
-        /**
-         * This function is provided for demonstration purposes only.
-         *
-         * An instance of this class should be passed to the run() function
-         * defined in Fetch_Mailchimp_Fields_Loader as all of the hooks are defined
-         * in that particular class.
-         *
-         * The Fetch_Mailchimp_Fields_Loader will then create the relationship
-         * between the defined hooks and the functions defined in this
-         * class.
-         */
-
         global $post;
         if( has_shortcode( $post->post_content, $this->shortcode_name ) ) {
-            wp_enqueue_script( 'vue', 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js', [], '2.6.10' );
+            wp_enqueue_script( 'vue', 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js', [], '2.6.10' );
             wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/fetch-mailchimp-fields-public.js', ['vue'], $this->version, true );
             wp_add_inline_script( $this->plugin_name, 'window.ajaxurl = "' . admin_url( 'admin-ajax.php' ) . '"');
         }
     }
-
 }

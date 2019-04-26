@@ -1,0 +1,104 @@
+@tailwind preflight;
+@tailwind components;
+@tailwind utilities;
+
+.unset-line-height {
+    line-height: unset;
+}
+.btn {
+    @apply font-bold cursor-pointer whitespace-no-wrap border px-3 py-0;
+}
+.btn-rounded {
+    @apply rounded;
+}
+.btn-disabled {
+    @apply cursor-not-allowed bg-grey;
+}
+.btn-sm {
+    @apply text-sm;
+}
+.btn-blue-dark {
+    @apply bg-blue-dark text-white border-blue-dark;
+}
+.btn-blue-dark:hover {
+    @apply bg-blue border-blue text-white;
+}
+.btn-blue-dark:disabled {
+    @apply btn-disabled bg-blue text-white border-blue;
+}
+
+/* ref: https://stephanwagner.me/only-css-loading-spinner*/
+@keyframes spinner {
+    to {transform: rotate(360deg);}
+}
+.spinner {
+    position: relative;
+    margin: 0 5px;
+}
+.spinner:before {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 4px solid #fff;
+    border-radius: 50%;
+    box-sizing: border-box;
+    border-top-color: config('colors.grey');
+    animation: spinner .6s linear infinite;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+}
+.spinner:after {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+}
+.spinner-lg:before, .spinner-lg:after {
+    width: 32px;
+    height: 32px;
+}
+.spinner-blue:before {
+    border-top-color: config('colors.blue-light');
+}
+.spinner-green:before {
+    border-top-color: config('colors.green');
+}
+.spinner-red:before {
+    border-top-color: config('colors.red');
+}
+.spinner-pink:before {
+    border-top-color: config('colors.pink');
+}
+
+/* input-group like bootstrap */
+.input-group {
+    @apply flex flex-wrap items-stretch w-full relative;
+}
+.input-group-field {
+    @apply flex-shrink flex-grow flex-auto leading-normal w-px flex-1 border border-grey-light rounded px-3 relative ;
+}
+.input-group-btn {
+    @apply btn btn-rounded flex justify-center items-center;
+    text-decoration: none !important;
+}
+.input-group-field:first-child,
+.input-group-btn:first-child {
+    @apply border-r-0 rounded-r-none;
+}
+.input-group-field:last-child,
+.input-group-btn:last-child {
+    @apply border-l-0 rounded-l-none;
+}
+.input-group-field:not(:first-child),
+.input-group-btn:not(:last-child) {
+    @apply border-l-0 rounded-l-none;
+}
+.input-group-field:not(:last-child),
+.input-group-btn:not(:last-child) {
+    @apply border-r-0 rounded-r-none;
+}
