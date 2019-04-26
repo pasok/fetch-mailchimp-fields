@@ -25,3 +25,7 @@ This wordpress plugin gets the merge fields of a mailchimp subscriber.
 - field_names
     - comma seperated list of fields to display in the result.
     - ex: `[fetch_mailchimp_fields field_names=FNAME, LNAME]` will fetch and show only FNAME, LNAME fields.
+
+## demo
+![Demo](./demo.gif?raw=true)
+
