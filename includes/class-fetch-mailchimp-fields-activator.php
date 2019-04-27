@@ -6,8 +6,8 @@
  */
 class Fetch_Mailchimp_Fields_Activator {
 
-	public static function activate() {
+    public static function activate() {
 
-	}
+    }
 
 }

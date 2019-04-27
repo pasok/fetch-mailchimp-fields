@@ -1,8 +1,7 @@
 {
+  "author": "Asok P",
   "name": "fetch-mailchimp-fields",
-  "description": "Get Merge Fields of a mailchimp list",
-  "main": "index.js",
-  "dependencies": {},
+  "description": "Lookup a Subscriber in Mailchimp List and get their merge field details",
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^1.2.0",
     "cssnano": "^4.1.10",
@@ -10,10 +9,8 @@
     "tailwindcss-tables": "^0.2.0",
     "watch": "^1.0.2"
   },
-  "author": "Asok P",
-  "private": true,
   "scripts": {
-    "build:css": "cat public/css/src/*.css|postcss --output public/css/fetch-mailchimp-fields-public.css",
+    "build:css": "postcss public/css/src/tailwind.css --output public/css/tailwind.css",
     "watch": "watch 'npm run build:css' ./public"
   }
 }

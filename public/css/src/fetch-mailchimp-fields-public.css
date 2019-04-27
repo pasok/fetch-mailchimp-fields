@@ -1,9 +1,0 @@
-.mailchimp-fields :focus {
-    outline: none !important;
-}
-.mailchimp-fields .input-group-field {
-    border-radius: .25rem;
-}
-.mailchimp-fields .input-group-btn {
-    min-width: 9rem;
-}

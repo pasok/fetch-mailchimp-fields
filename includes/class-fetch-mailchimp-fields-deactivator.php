@@ -6,8 +6,8 @@
  */
 class Fetch_Mailchimp_Fields_Deactivator {
 
-	public static function deactivate() {
+    public static function deactivate() {
 
-	}
+    }
 
 }

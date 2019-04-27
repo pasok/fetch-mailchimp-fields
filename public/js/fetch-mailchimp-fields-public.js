@@ -23,10 +23,10 @@
                 <table v-else class="table table-sm table-hover table-bordered">
                 <tbody>
                     <tr v-for="(value, key) in apiResponse">
-                        <td class="whitespace-no-wrap">{{ key }}</td>
-                        <td>
+                        <td class="whitespace-no-wrap">{{ getDisplayName(key) }}</td>
+                        <td class="seventy-five-percent">
                             <pre v-if="isJson(value)" class="bg-transparent border-transparent whitespace-normal font-mono text-xs p-0">
-                                <code class="whitespace-pre-wrap">{{ prettify(value) }}</code>
+                                <code class="whitespace-pre-wrap">{{ prettifyJson(value) }}</code>
                             </pre>
                             <span v-else class="font-mono text-xs">{{ value }}</span>
                         </td>
@@ -46,9 +46,14 @@
             apiResponse: null,
             isLoading: false,
             fieldNamesList: null,
+            allFields: [],
         },
         beforeMount: function () {
             this.fieldNamesList = this.$el.attributes['data-field-names'].value;
+            this.allFields = this.$el.attributes['data-all-field-details'].value;
+        },
+        mounted: function () {
+            this.processallFieldsParam();
         },
         methods: {
             fetchMailchimpFields: function () {
@@ -71,7 +76,6 @@
                         setTimeout(() => {
                             this.apiResponse = null;
                             this.isLoading = false;
-                            console.log(error);
                         }, 100);
                     });
                     //TODO:: catch/show error
@@ -87,9 +91,22 @@
                     return false;
                 }
             },
-            prettify: function(input) {
+            prettifyJson: function(input) {
                 return JSON.stringify(input, undefined, 2);
-            }
+            },
+            processallFieldsParam: function() {
+                try {
+                    this.allFields = JSON.parse(this.allFields);
+                } catch (e) {
+                    return false;
+                }
+            },
+            getDisplayName: function(input) {
+                if (typeof this.allFields === "object" && (input in this.allFields)) {
+                    return this.allFields[input];
+                }
+                return input;
+            },
         },
     });
 })();
