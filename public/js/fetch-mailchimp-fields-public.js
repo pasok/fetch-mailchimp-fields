@@ -2,17 +2,16 @@
     'use strict';
 
     var template = `<div id="mailchimp-fields" class="mailchimp-fields">
-
-        <form class="mailchimp-fields-form" method="post" @submit.prevent="fetchMailchimpField">
+        <form method="post" @submit.prevent="fetchMailchimpFields">
             <input type="hidden" name="action" v-model="action">
             <div class="input-group">
                 <input type="text" class="input-group-field" name="email" v-model="email" placeholder="Enter Subscriber Email">
-                <button :disabled="isLoading === true" class="input-group-btn btn-sm btn-blue-dark unset-line-height" @click="fetchMailchimpField">
-                        <span v-if="isLoading === false" class="text">Get Details</span>
-                        <span v-else>
-                            <span class="text">Getting Details</span>
-                            <span class="spinner spinner-blue"></span>
-                        </span>
+                <button :disabled="isLoading === true" class="input-group-btn btn-sm btn-blue-dark unset-line-height" @click="fetchMailchimpFields">
+                    <span v-if="isLoading === false" class="text">Get Details</span>
+                    <span v-else>
+                        <span class="text">Getting Details</span>
+                        <span class="spinner spinner-blue"></span>
+                    </span>
                 </button>
             </div>
         </form>
@@ -52,10 +51,9 @@
             this.fieldNamesList = this.$el.attributes['data-field-names'].value;
         },
         methods: {
-            fetchMailchimpField: function () {
+            fetchMailchimpFields: function () {
                 const headers = {'Content-Type': 'application/x-www-form-urlencoded'};
                 const params  = new URLSearchParams();
-
                 params.append('email', this.email);
                 params.append('action', this.action);
                 params.append('field_names', this.fieldNamesList);

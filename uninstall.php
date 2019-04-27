@@ -20,7 +20,6 @@
  * https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate/pull/123#issuecomment-28541913
  *
  * @link       wordpress.org
- * @since      1.0.0
  *
  * @package    Fetch_Mailchimp_Fields
  */

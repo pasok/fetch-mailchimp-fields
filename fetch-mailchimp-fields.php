@@ -9,16 +9,15 @@
  * that starts the plugin.
  *
  * @link              wordpress.org
- * @since             1.0.0
  * @package           Fetch_Mailchimp_Fields
  *
  * @wordpress-plugin
  * Plugin Name:       Fetch Mailchimp Fields
- * Plugin URI:        wordpress.org
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
- * Version:           1.0.0
+ * Plugin URI:        https://bitbucket.org/pasok/fetch-mailchimp-fields
+ * Description:       Lookup a Subscriber in Mailchimp List and get their merge field details.
+ * Version:           5.0.0
  * Author:            Asok P
- * Author URI:        wordpress.org
+ * Author URI:        https://bitbucket.org/pasok
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       fetch-mailchimp-fields
@@ -35,7 +34,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'FETCH_MAILCHIMP_FIELDS_VERSION', '2.0.0' );
+define( 'FETCH_MAILCHIMP_FIELDS_VERSION', '4.0.0' );
 
 /**
  * The code that runs during plugin activation.
@@ -71,7 +70,6 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-fetch-mailchimp-fields.php
  * then kicking off the plugin from this point in the file does
  * not affect the page life cycle.
  *
- * @since    1.0.0
  */
 function run_fetch_mailchimp_fields() {
 

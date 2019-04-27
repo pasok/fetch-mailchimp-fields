@@ -3,72 +3,57 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * @link       wordpress.org
- * @since      1.0.0
- *
- * @package    Fetch_Mailchimp_Fields
- * @subpackage Fetch_Mailchimp_Fields/public
- */
-
-/**
- * The public-facing functionality of the plugin.
- *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the public-facing stylesheet and JavaScript.
- *
  * @package    Fetch_Mailchimp_Fields
  * @subpackage Fetch_Mailchimp_Fields/public
  * @author     Asok P <asok@fastmail.com>
  */
 class Fetch_Mailchimp_Fields_Public {
 
-    /**
-     * The ID of this plugin.
-     *
-     * @since    1.0.0
-     * @access   private
-     * @var      string    $plugin_name    The ID of this plugin.
-     */
     private $plugin_name;
-
+    private $version;
     private $shortcode_name = 'fetch_mailchimp_fields';
-
     private $shortcode_atts = ['field_names' => null];
 
-    /**
-     * The version of this plugin.
-     *
-     * @since    1.0.0
-     * @access   private
-     * @var      string    $version    The current version of this plugin.
-     */
-    private $version;
-
-    /**
-     * Initialize the class and set its properties.
-     *
-     * @since    1.0.0
-     * @param      string    $plugin_name       The name of the plugin.
-     * @param      string    $version    The version of this plugin.
-     */
     public function __construct( $plugin_name, $version ) {
-
         $this->plugin_name = $plugin_name;
         $this->version = $version;
 
-        add_shortcode( $this->shortcode_name, [$this, 'shortcode'] );
-        add_action('wp_ajax_fetch_mailchimp_fields', array($this, 'fetch_mailchimp_fields'));
-        add_action('wp_ajax_nopriv_fetch_mailchimp_fields', [$this, 'fetch_mailchimp_fields'] );
+        add_shortcode($this->shortcode_name, [$this, 'fetch_mailchimp_fields_shortcode']);
+
+        add_action('wp_ajax_fetch_mailchimp_fields', [$this, 'fetch_mailchimp_fields']);
+
+        add_action('wp_ajax_nopriv_fetch_mailchimp_fields', [$this, 'fetch_mailchimp_fields']);
     }
 
     /**
+     * callback function to display shortcode
      * Generate html markup for the public-facing side of the site.
      */
-    public function shortcode($atts) {
+    public function fetch_mailchimp_fields_shortcode($atts) {
         // if (!is_user_logged_in()) { return false; }
         $this->shortcode_atts = shortcode_atts($this->shortcode_atts, $atts );
 
         return "<div id='fetch-mailchimp-fields-app' data-field-names='{$this->shortcode_atts['field_names']}'></div>";
+    }
+
+    /**
+     * Register stylesheets for the public-facing side of the site.
+     */
+    public function enqueue_styles() {
+        if (has_shortcode(get_post()->post_content, $this->shortcode_name)) {
+            wp_enqueue_style($this->plugin_name, plugins_url('css/fetch-mailchimp-fields-public.css', __FILE__ ), [], $this->version, 'all' );
+        }
+    }
+
+    /**
+     * Register JavaScript file for the public-facing side of the site.
+     */
+    public function enqueue_scripts() {
+        if (has_shortcode(get_post()->post_content, $this->shortcode_name)) {
+            wp_enqueue_script('vue', 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js', [], '2.6.10' );
+            wp_enqueue_script($this->plugin_name, plugins_url('js/fetch-mailchimp-fields-public.js', __FILE__ ), ['vue'], $this->version, true);
+            wp_add_inline_script($this->plugin_name, 'window.ajaxurl = "' . admin_url('admin-ajax.php') . '"');
+        }
     }
 
     /**
@@ -111,28 +96,5 @@ class Fetch_Mailchimp_Fields_Public {
 
         //TODO:: add crosschecks for error responses from mailchimp api
         exit(json_encode($serverData));
-    }
-
-    /**
-     * Register the stylesheets for the public-facing side of the site.
-     *
-     * @since    1.0.0
-     */
-    public function enqueue_styles() {
-        wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/fetch-mailchimp-fields-public.css', array(), $this->version, 'all' );
-    }
-
-    /**
-     * Register the JavaScript for the public-facing side of the site.
-     *
-     * @since    1.0.0
-     */
-    public function enqueue_scripts() {
-        global $post;
-        if( has_shortcode( $post->post_content, $this->shortcode_name ) ) {
-            wp_enqueue_script( 'vue', 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js', [], '2.6.10' );
-            wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/fetch-mailchimp-fields-public.js', ['vue'], $this->version, true );
-            wp_add_inline_script( $this->plugin_name, 'window.ajaxurl = "' . admin_url( 'admin-ajax.php' ) . '"');
-        }
     }
 }
