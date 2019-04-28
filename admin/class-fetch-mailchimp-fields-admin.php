@@ -5,7 +5,7 @@
  *
  * @package    Fetch_Mailchimp_Fields
  * @subpackage Fetch_Mailchimp_Fields/admin
- * @author     Asok P <asok@fastmail.com>
+ * @author     Asok P
  */
 class Fetch_Mailchimp_Fields_Admin {
 
