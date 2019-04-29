@@ -5,7 +5,10 @@
     border-radius: .25rem;
 }
 .mailchimp-fields .input-group-btn {
-    min-width: 9rem;
+    font-size: 13px;
+    min-width: 170px;
+    min-height: 35px;
+    line-height: 35px;
 }
 .mailchimp-fields .seventy-five-percent {
     width: 75%;

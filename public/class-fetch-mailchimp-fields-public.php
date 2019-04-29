@@ -34,9 +34,7 @@ class Fetch_Mailchimp_Fields_Public {
         // if (!is_user_logged_in()) { return false; }
         $this->shortcode_atts = shortcode_atts($this->shortcode_atts, $atts );
 
-        return "<div id='fetch-mailchimp-fields-app' data-field-names='{$this->shortcode_atts['field_names']}'
-            data-all-field-details='{$this->mailchimp_api->get_all_merge_fields_of_list()}'>
-            </div>";
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/fetch-mailchimp-fields-public-display.php';
     }
 
     /**
@@ -56,7 +54,6 @@ class Fetch_Mailchimp_Fields_Public {
         if (has_shortcode(get_post()->post_content, $this->shortcode_name)) {
             wp_enqueue_script('vue', 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js', [], '2.6.10' );
             wp_enqueue_script($this->plugin_name, plugins_url('js/fetch-mailchimp-fields-public.js', __FILE__ ), ['vue'], $this->version, true);
-            wp_add_inline_script($this->plugin_name, 'window.ajaxurl = "' . admin_url('admin-ajax.php') . '"');
         }
     }
 

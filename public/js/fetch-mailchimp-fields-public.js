@@ -1,7 +1,7 @@
 ( function() {
     'use strict';
 
-    var template = `<div id="mailchimp-fields" class="mailchimp-fields">
+    var template = `<div class="mailchimp-fields">
         <form method="post" @submit.prevent="fetchMailchimpFields">
             <input type="hidden" name="action" v-model="action">
             <div class="input-group">
@@ -16,7 +16,7 @@
             </div>
         </form>
 
-        <div class="result text-xs my-1">
+        <div class="result text-sm my-1">
             <div v-if="apiResponse !== null">
                 <span v-if="(apiResponse.hasOwnProperty('error'))" class="text-red" >{{ apiResponse.error }}</span>
 
@@ -25,10 +25,10 @@
                     <tr v-for="(value, key) in apiResponse">
                         <td class="whitespace-no-wrap">{{ getDisplayName(key) }}</td>
                         <td class="seventy-five-percent">
-                            <pre v-if="isJson(value)" class="bg-transparent border-transparent whitespace-normal font-mono text-xs p-0">
+                            <pre v-if="isJson(value)" class="bg-transparent border-transparent whitespace-normal font-mono text-sm p-0 m-0">
                                 <code class="whitespace-pre-wrap">{{ prettifyJson(value) }}</code>
                             </pre>
-                            <span v-else class="font-mono text-xs">{{ value }}</span>
+                            <span v-else class="font-mono text-sm">{{ value }}</span>
                         </td>
                     </tr>
                 </tbody>

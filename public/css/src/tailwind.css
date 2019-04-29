@@ -33,7 +33,7 @@
 }
 .spinner {
     position: relative;
-    margin: 0 5px;
+    margin: 0 0 0 5px;
 }
 .spinner:before {
     content: '';

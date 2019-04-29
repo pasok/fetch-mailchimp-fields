@@ -7,6 +7,7 @@ class MailChimpApi
     private $api_key;
     private $list_id;
     private $error;
+    private $mailchimp;
 
     public function __construct()
     {
@@ -22,6 +23,8 @@ class MailChimpApi
 
     public function get_all_merge_fields_of_list($list_id = null)
     {
+        if(!empty($this->error)) { return false; }
+
         $list_id = !empty($list_id) ? $list_id : $this->list_id;
         try {
             $api_url = "lists/{$list_id}/merge-fields";
