@@ -3,14 +3,21 @@
   "name": "fetch-mailchimp-fields",
   "description": "Lookup a Subscriber in Mailchimp List and get their merge field details",
   "devDependencies": {
-    "@fullhuman/postcss-purgecss": "^1.2.0",
-    "cssnano": "^4.1.10",
+    "axios": "^0.18.0",
+    "cross-env": "^5.2.0",
+    "laravel-mix": "^4.0.15",
+    "lodash": "^4.17.11",
     "tailwindcss": "^0.7.4",
     "tailwindcss-tables": "^0.2.0",
-    "watch": "^1.0.2"
+    "vee-validate": "^2.2.5",
+    "vue": "^2.6.10",
+    "vue-template-compiler": "^2.6.10"
   },
   "scripts": {
-    "build:css": "postcss public/css/src/tailwind.css --output public/css/tailwind.css",
-    "watch": "watch 'npm run build:css' ./public"
+    "prod": "npm run production",
+    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "dev": "npm run development",
+    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "npm run development -- --watch"
   }
 }

@@ -31,10 +31,52 @@ class Fetch_Mailchimp_Fields_Public {
      * Generate html markup for the public-facing side of the site.
      */
     public function shortcode_callback($atts) {
-        // if (!is_user_logged_in()) { return false; }
         $this->shortcode_atts = shortcode_atts($this->shortcode_atts, $atts );
 
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/fetch-mailchimp-fields-public-display.php';
+    }
+
+    /**
+     * call mailchimp api to get merge fields of specific user
+     */
+    public function ajax_callback() {
+        $email = sanitize_email( $_POST['email'] );
+        $field_names = $this->csvToArray( sanitize_text_field( $_POST['field_names'] ) );
+
+        // return error if there is a mismatch in nonce_token
+        if ( ! wp_verify_nonce( $_POST['nonce_token'], $this->shortcode_name ) ) {
+            die( json_encode(['error' => __('Invalid token. Please crosscheck and retry')]));
+        }
+        // return error if input email is not valid
+        if ( ! is_email( $email ) ) {
+            die(json_encode(['error' => __('Invalid email address.')]));
+        }
+        // return error if mailchimp responded with error
+        if (!$mailchimpData = $this->mailchimp_api->get_merge_fields_of_member($email)) {
+            die(json_encode(['error' => $this->mailchimp_api->get_error()]));
+        }
+
+        // all is well. respond by filtering mailchimp data if field_names attr is provided
+        if(is_array($field_names) and !empty($field_names)){
+            die(json_encode(array_intersect_key($mailchimpData, $field_names)));
+        }
+
+        // all is well. respond with data received from mailchimp as is
+        die(json_encode($mailchimpData));
+    }
+
+    /**
+     * Helper method to convert comma seperated values in the string as keys in arrays
+     */
+    public function csvToArray($input = '')
+    {
+        if ( empty($input) || (strpos($input, ',') === false) ) { return $input; }
+
+        return array_flip(array_map(function($value) {
+                return strtoupper(trim($value));
+            }, explode(',', $input)
+        ));
+
     }
 
     /**
@@ -52,39 +94,7 @@ class Fetch_Mailchimp_Fields_Public {
      */
     public function enqueue_scripts() {
         if (has_shortcode(get_post()->post_content, $this->shortcode_name)) {
-            wp_enqueue_script('vue', 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js', [], '2.6.10' );
-            wp_enqueue_script($this->plugin_name, plugins_url('js/fetch-mailchimp-fields-public.js', __FILE__ ), ['vue'], $this->version, true);
+            wp_enqueue_script($this->plugin_name, plugins_url('js/fetch-mailchimp-fields-public.js', __FILE__ ), [], $this->version, true);
         }
-    }
-
-    /**
-     * call mailchimp api to get merge fields of specific user
-     * ref: https://developer.mailchimp.com/documentation/mailchimp/reference/lists/members
-     * TODO:: make a class for all mailchimp methods
-     */
-    public function ajax_callback() {
-        $email = trim($_POST['email']);
-        $field_names = [];
-
-        //TODO:: add email validation
-        if ($email == '') {
-            exit(json_encode(['error' => 'Email is required']));
-        }
-        if (isset($_POST['field_names']) && !empty($_POST['field_names'])) {
-            $field_names = array_flip(array_map(function($value) {
-                    return strtoupper(trim($value));
-                }, explode(',', $_POST['field_names'])
-            ));
-        }
-
-        if (!$serverData = $this->mailchimp_api->get_merge_fields_of_member($email)) {
-            exit(json_encode(['error' => $this->mailchimp_api->get_error()]));
-        }
-        if(sizeof($field_names) > 0) {
-            exit(json_encode(array_intersect_key($serverData, $field_names)));
-        }
-
-        //TODO:: add crosschecks for error responses from mailchimp api
-        exit(json_encode($serverData));
     }
 }

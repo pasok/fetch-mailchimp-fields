@@ -40,6 +40,11 @@ This wordpress plugin gets the merge fields of a mailchimp subscriber.
 1. Get merge field values of a mailchimp subscriber
 
 == Changelog ==
+= 1.6.0 =
+* added client/server side validations
+* setup npm build process for all js/css files that are used.
+* added nonce security check
+
 = 1.5.0 =
 * added field_names attribute to allow user to specify list of fields to be shown
 * moved all mailchimp related methods into a seperate wrapper class
