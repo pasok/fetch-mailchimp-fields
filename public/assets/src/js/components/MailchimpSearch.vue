@@ -1,6 +1,5 @@
-'use strict';
-
-var template = `<div class="mailchimp-fields">
+<template>
+<div class="mailchimp-fields">
     <form method="post" @submit.prevent="submitForm">
         <input type="hidden" name="action" v-model="action">
         <div class="input-group">
@@ -34,40 +33,35 @@ var template = `<div class="mailchimp-fields">
             </table>
         </div>
     </div>
-</div>`;
+</div>
+</template>
 
+<script>
 import _ from 'lodash';
 import axios from 'axios';
-import Vue from 'vue';
-import VeeValidate from 'vee-validate';
-Vue.use(VeeValidate);
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.timeout = 60000; // 60 seconds
 
-const params = new URLSearchParams();
-const vm     = new Vue({
-    el: '#fetch-mailchimp-fields-app',
-    template: template,
-    data: {
+export default {
+    name: 'MailchimpSearch',
+    props: {
+        ajaxUrl: '',
         action: '',
-        email: '',
-        apiResponse: null,
-        isLoading: false,
-        ajaxUrl: null,
-        fieldNames: null,
-        fieldDisplayNames: null,
-        nonceToken: null,
+        nonceToken: '',
+        fieldNames: '',
+        fieldDisplayNames: '',
     },
-    beforeMount: function () {
-        this.nonceToken = this.$el.attributes['data-nonce-token'].value;
-        this.action = this.$el.attributes['data-action'].value;
-        this.ajaxUrl = this.$el.attributes['data-ajax-url'].value;
-        this.fieldNames = this.$el.attributes['data-field-names'].value;
-        this.fieldDisplayNames = this.$el.attributes['data-field-display-names'].value;
+    data() {
+        return {
+            email: '',
+            apiResponse: null,
+            isLoading: false,
+            fieldDisplayNamesModel: null,
+        };
     },
     mounted: function () {
-        this.fieldDisplayNames = this.parseJson(this.fieldDisplayNames);
+        this.fieldDisplayNamesModel = this.parseJson(this.fieldDisplayNames);
     },
     methods: {
         parseJson: function(input) {
@@ -82,8 +76,8 @@ const vm     = new Vue({
             this.errors.add({ field: 'email', msg: msg });
         },
         getFieldDisplayName: function(fieldName) {
-            if (_.isObject(this.fieldDisplayNames) && _.has(this.fieldDisplayNames, fieldName)) {
-                return this.fieldDisplayNames[fieldName];
+            if (_.isObject(this.fieldDisplayNamesModel) && _.has(this.fieldDisplayNamesModel, fieldName)) {
+                return this.fieldDisplayNamesModel[fieldName];
             }
             return fieldName;
         },
@@ -107,6 +101,7 @@ const vm     = new Vue({
         async submitForm() {
             if (!await this.$validator.validate()) { return false; }
 
+            const params = new URLSearchParams();
             params.append('nonce_token', this.nonceToken);
             params.append('action', this.action);
             params.append('email', this.email);
@@ -121,4 +116,5 @@ const vm     = new Vue({
                 });
         },
     },
-});
+};
+</script>
