@@ -21,9 +21,9 @@ class Fetch_Mailchimp_Fields_Public {
 
         add_shortcode($this->shortcode_name, [$this, 'shortcode_callback']);
 
-        add_action('wp_ajax_fetch_mailchimp_fields', [$this, 'ajax_callback']);
+        add_action("wp_ajax_{$this->shortcode_name}", [$this, 'ajax_callback']);
 
-        add_action('wp_ajax_nopriv_fetch_mailchimp_fields', [$this, 'ajax_callback']);
+        add_action("wp_ajax_nopriv_{$this->shortcode_name}", [$this, 'ajax_callback']);
     }
 
     /**
@@ -33,7 +33,7 @@ class Fetch_Mailchimp_Fields_Public {
     public function shortcode_callback($atts) {
         $this->shortcode_atts = shortcode_atts($this->shortcode_atts, $atts );
 
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/fetch-mailchimp-fields-public-display.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . "public/partials/{$this->plugin_name}-public-display.php";
     }
 
     /**
@@ -68,15 +68,13 @@ class Fetch_Mailchimp_Fields_Public {
     /**
      * Helper method to convert comma seperated values in the string as keys in arrays
      */
-    public function csvToArray($input = '')
-    {
+    public function csvToArray($input = '') {
         if ( empty($input) || (strpos($input, ',') === false) ) { return $input; }
 
         return array_flip(array_map(function($value) {
                 return strtoupper(trim($value));
             }, explode(',', $input)
         ));
-
     }
 
     /**
@@ -84,7 +82,7 @@ class Fetch_Mailchimp_Fields_Public {
      */
     public function enqueue_styles() {
         if (has_shortcode(get_post()->post_content, $this->shortcode_name)) {
-            wp_enqueue_style($this->plugin_name, plugins_url('assets/dist/css/fetch-mailchimp-fields-public.css', __FILE__ ), [], $this->version, 'all' );
+            wp_enqueue_style($this->plugin_name, plugins_url("assets/dist/css/{$this->plugin_name}-public.css", __FILE__ ), [], $this->version, 'all' );
             wp_enqueue_style("{$this->plugin_name}-style", plugins_url('assets/style.css', __FILE__ ), [], $this->version, 'all' );
         }
     }
@@ -94,7 +92,7 @@ class Fetch_Mailchimp_Fields_Public {
      */
     public function enqueue_scripts() {
         if (has_shortcode(get_post()->post_content, $this->shortcode_name)) {
-            wp_enqueue_script($this->plugin_name, plugins_url('assets/dist/js/fetch-mailchimp-fields-public.js', __FILE__ ), [], $this->version, true);
+            wp_enqueue_script($this->plugin_name, plugins_url("assets/dist/js/{$this->plugin_name}-public.js", __FILE__ ), [], $this->version, true);
         }
     }
 }

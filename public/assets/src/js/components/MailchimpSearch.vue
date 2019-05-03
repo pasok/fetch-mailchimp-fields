@@ -1,7 +1,6 @@
 <template>
 <div class="mailchimp-fields">
     <form method="post" @submit.prevent="submitForm">
-        <input type="hidden" name="action" v-model="action">
         <div class="input-group">
             <input type="text" class="input-group-field" name="email" placeholder="Enter Subscriber Email"
                 v-model="email" v-validate="'required|email'" data-vv-as="Email" data-vv-validate-on="change">
@@ -21,7 +20,7 @@
             <table class="table table-sm table-hover table-bordered">
             <tbody>
                 <tr v-for="(value, key) in apiResponse">
-                    <td class="whitespace-no-wrap">{{ getFieldDisplayName(key) }}</td>
+                    <td class="whitespace-no-wrap">{{ getDisplayName(key) }}</td>
                     <td class="seventy-five-percent">
                         <pre v-if="_.isObject(value)" class="bg-transparent border-transparent whitespace-normal font-mono text-sm p-0 m-0">
                             <code class="whitespace-pre-wrap">{{ prettifyJson(value) }}</code>
@@ -57,11 +56,12 @@ export default {
             email: '',
             apiResponse: null,
             isLoading: false,
-            fieldDisplayNamesModel: null,
         };
     },
-    mounted: function () {
-        this.fieldDisplayNamesModel = this.parseJson(this.fieldDisplayNames);
+    computed: {
+        displayNames: function () {
+            return this.parseJson(this.fieldDisplayNames);
+        }
     },
     methods: {
         parseJson: function(input) {
@@ -75,9 +75,9 @@ export default {
             this.errors.remove('email');
             this.errors.add({ field: 'email', msg: msg });
         },
-        getFieldDisplayName: function(fieldName) {
-            if (_.isObject(this.fieldDisplayNamesModel) && _.has(this.fieldDisplayNamesModel, fieldName)) {
-                return this.fieldDisplayNamesModel[fieldName];
+        getDisplayName: function(fieldName) {
+            if (_.isObject(this.displayNames) && _.has(this.displayNames, fieldName)) {
+                return this.displayNames[fieldName];
             }
             return fieldName;
         },

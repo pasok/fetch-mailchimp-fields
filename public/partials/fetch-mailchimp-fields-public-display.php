@@ -1,5 +1,5 @@
 <!-- Provide a public-facing view for the plugin -->
-<div id='fetch-mailchimp-fields-app'>
+<div id="<?php echo $this->plugin_name ?>-app">
     <mailchimp-search
         ajax-url='<?php echo admin_url('admin-ajax.php') ?>'
         action='<?php echo $this->shortcode_name ?>'
