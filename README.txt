@@ -9,35 +9,34 @@ Requires PHP: 5.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
+This plugin looks up a Subscriber in MailChimp list and shows their merge fields.
+
 == Description ==
-- This wordpress plugin gets the merge fields of a mailchimp subscriber.
-- know about mailchimp merge fields, here.
+
+- Lookup email in MailChimp list and show their merge fields.
+- Know about mailchimp merge fields, here.
     - [mailchimp.com/help/manage-audience-signup-form-fields](https://mailchimp.com/help/manage-audience-signup-form-fields)
     - [developer.mailchimp.com/documentation/mailchimp/reference/lists/members](https://developer.mailchimp.com/documentation/mailchimp/reference/lists/members)
     - [developer.mailchimp.com/documentation/mailchimp/reference/lists/merge-fields](https://developer.mailchimp.com/documentation/mailchimp/reference/lists/merge-fields)
 
-== Installation ==
-- Download latest version - [latest.zip](https://github.com/pasok/fetch-mailchimp-fields/archive/latest.zip)
-- Login to admin panel of the wordpress site
-- Go to Plugins -> Add New -> Upload Plugin
-    - upload the zipfile
-    - install the plugin
-    - activate the plugin
 
-== Usage ==
+=== Usage ===
+
 - Login to admin panel of the wordpress site
 - Go to MailChimp Config. Set following fields
-    - **Mailchimp List Id** - [mailchimp.com/help/find-audience-id](https://mailchimp.com/help/find-audience-id">mailchimp.com/help/find-audience-id)
+    - **Mailchimp List Id** - [mailchimp.com/help/find-audience-id](https://mailchimp.com/help/find-audience-id)
     - **Mailchimp Api Key** - [mailchimp.com/help/about-api-keys](https://mailchimp.com/help/about-api-keys/#Find_or_Generate_Your_API_Key)
-- Place `[fetch_mailchimp_fields]` shortcode in any post/page to use the plugin
+- Place following shortcode in any post/page to use the plugin
+    - **[fetch_mailchimp_fields]**
+
 
 == Optional attributes ==
-- field_names
-    - comma seperated list of fields to display in the result.
-    - ex: `[fetch_mailchimp_fields field_names=FNAME, LNAME]` will fetch and show only FNAME, LNAME fields.
 
-== Screenshots ==
-1. Get merge field values of a mailchimp subscriber
+- field_names
+    - comma seperated string with list of fields
+    - following shortcode will show only FNAME, LNAME fields.
+        - **[fetch_mailchimp_fields field_names='FNAME, LNAME']**
+
 
 == Changelog ==
 = 1.6.0 =
@@ -54,3 +53,8 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 = 1.0.0 =
 * Initial release
+
+
+== Screenshots ==
+
+1. Get merge field values of a MailChimp Subscriber
