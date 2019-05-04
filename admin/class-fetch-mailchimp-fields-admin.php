@@ -146,15 +146,13 @@ class Fetch_Mailchimp_Fields_Admin {
      * Register stylesheets files for the admin area.
      */
     public function enqueue_styles() {
-        // enable when you want to style the options page
-        // wp_enqueue_style( $this->plugin_name, plugins_url('css/fetch-mailchimp-fields-admin.css', __FILE__), [], $this->version, 'all');
+
     }
 
     /**
      * Register JavaScript files for the admin area.
      */
     public function enqueue_scripts() {
-        // enable when you want to use custom javascript on the options page
-        // wp_enqueue_script( $this->plugin_name, plugins_url('js/fetch-mailchimp-fields-admin.js', __FILE__), ['jquery'], $this->version, true);
+
     }
 }

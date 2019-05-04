@@ -6,6 +6,7 @@
     "axios": "^0.18.0",
     "cross-env": "^5.2.0",
     "laravel-mix": "^4.0.15",
+    "laravel-mix-purgecss": "^4.1.0",
     "lodash": "^4.17.11",
     "tailwindcss": "^0.7.4",
     "tailwindcss-tables": "^0.2.0",
@@ -15,9 +16,9 @@
   },
   "scripts": {
     "prod": "npm run production",
-    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "production": "cross-env NODE_ENV=production webpack --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
     "dev": "npm run development",
-    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "development": "cross-env NODE_ENV=development webpack --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
     "watch": "npm run development -- --watch"
   }
 }

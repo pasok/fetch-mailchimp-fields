@@ -1,10 +1,4 @@
-<?php
-/**
- * Provide admin area view for the plugin
- * This file is used to markup the admin-facing aspects of the plugin.
- */
-?>
-
+<!-- Provide admin area view for the plugin -->
 <div class="wrap">
     <form method="POST" action="options.php">
     <?php

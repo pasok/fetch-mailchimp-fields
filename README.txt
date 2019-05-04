@@ -9,19 +9,12 @@ Requires PHP: 5.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin looks up a Subscriber in MailChimp list and shows their merge fields.
 
 == Description ==
-
-- Lookup email in MailChimp list and show their merge fields.
-- Know about mailchimp merge fields, here.
-    - [mailchimp.com/help/manage-audience-signup-form-fields](https://mailchimp.com/help/manage-audience-signup-form-fields)
-    - [developer.mailchimp.com/documentation/mailchimp/reference/lists/members](https://developer.mailchimp.com/documentation/mailchimp/reference/lists/members)
-    - [developer.mailchimp.com/documentation/mailchimp/reference/lists/merge-fields](https://developer.mailchimp.com/documentation/mailchimp/reference/lists/merge-fields)
+This plugin looks up a Subscriber in MailChimp list and shows their merge fields.
 
 
 === Usage ===
-
 - Login to admin panel of the wordpress site
 - Go to MailChimp Config. Set following fields
     - **Mailchimp List Id** - [mailchimp.com/help/find-audience-id](https://mailchimp.com/help/find-audience-id)
@@ -31,7 +24,6 @@ This plugin looks up a Subscriber in MailChimp list and shows their merge fields
 
 
 == Optional attributes ==
-
 - field_names
     - comma seperated string with list of fields
     - following shortcode will show only FNAME, LNAME fields.
@@ -56,5 +48,4 @@ This plugin looks up a Subscriber in MailChimp list and shows their merge fields
 
 
 == Screenshots ==
-
 1. Get merge field values of a MailChimp Subscriber
