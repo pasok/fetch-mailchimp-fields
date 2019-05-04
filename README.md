@@ -35,7 +35,7 @@ npm run watch
 
 ## Optional attributes
 - field_names
-    - comma seperated string with list of fields
+    - comma separated string with list of fields
     - following shortcode will fetch and show only FNAME, LNAME fields.
         ```
         [fetch_mailchimp_fields field_names='FNAME, LNAME']
@@ -50,7 +50,7 @@ npm run watch
     * added nonce security check
 * 1.5.0
     * added field_names attribute to allow user to specify list of fields to be shown
-    * moved all mailchimp related methods into a seperate wrapper class
+    * moved all mailchimp related methods into a separate wrapper class
     * decoupled tailwindcss into its own file so end user can make custom changes to fetch-mailchimp-fields-public.css
     * displaying merge field names instead of tags in result set
     * made the plugin backward compatible and tested till 4.0
