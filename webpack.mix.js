@@ -10,6 +10,7 @@ mix.postCss('public/assets/src/css/fetch-mailchimp-fields-public.css', 'public/a
         enabled: true,
         paths: () => glob.sync([
             path.join(__dirname, 'public/assets/src/js/*.js'),
+            path.join(__dirname, 'public/assets/src/js/components/*.vue'),
             path.join(__dirname, 'public/partials/*.php'),
         ]),
     });

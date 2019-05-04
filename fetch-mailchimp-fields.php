@@ -15,8 +15,8 @@
  * Plugin Name:       Fetch Mailchimp Fields
  * Plugin URI:        https://bitbucket.org/pasok/fetch-mailchimp-fields
  * Description:       Lookup a Subscriber in Mailchimp List and get their merge field details.
- * Version:           1.6.0
- * Author:            Asok P
+ * Version:           1.6.1
+ * Author:            nosokam
  * Author URI:        https://twitter.com/nosokam
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
@@ -34,7 +34,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'FETCH_MAILCHIMP_FIELDS_VERSION', '1.6.0' );
+define( 'FETCH_MAILCHIMP_FIELDS_VERSION', '1.6.1' );
 
 /**
  * The code that runs during plugin activation.

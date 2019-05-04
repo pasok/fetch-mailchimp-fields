@@ -79,26 +79,26 @@
 .input-group {
     @apply flex flex-wrap items-stretch w-full relative;
 }
-.input-group-field {
+.input-group .input-group-field {
     @apply flex-shrink flex-grow flex-auto leading-normal w-px flex-1 border border-grey-light rounded px-3 relative ;
 }
-.input-group-btn {
+.input-group .input-group-btn {
     @apply btn btn-rounded flex justify-center items-center;
     text-decoration: none !important;
 }
-.input-group-field:first-child,
-.input-group-btn:first-child {
+.input-group .input-group-field:first-child,
+.input-group .input-group-btn:first-child {
     @apply border-r-0 rounded-r-none;
 }
-.input-group-field:last-child,
-.input-group-btn:last-child {
+.input-group .input-group-field:last-child,
+.input-group .input-group-btn:last-child {
     @apply border-l-0 rounded-l-none;
 }
-.input-group-field:not(:first-child),
-.input-group-btn:not(:last-child) {
+.input-group .input-group-field:not(:first-child),
+.input-group .input-group-btn:not(:last-child) {
     @apply border-l-0 rounded-l-none;
 }
-.input-group-field:not(:last-child),
-.input-group-btn:not(:last-child) {
+.input-group .input-group-field:not(:last-child),
+.input-group .input-group-btn:not(:last-child) {
     @apply border-r-0 rounded-r-none;
 }

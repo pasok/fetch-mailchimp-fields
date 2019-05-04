@@ -82,8 +82,8 @@ class Fetch_Mailchimp_Fields_Public {
      */
     public function enqueue_styles() {
         if (has_shortcode(get_post()->post_content, $this->shortcode_name)) {
-            wp_enqueue_style($this->plugin_name, plugins_url("assets/dist/css/{$this->plugin_name}-public.css", __FILE__ ), [], $this->version, 'all' );
-            wp_enqueue_style("{$this->plugin_name}-style", plugins_url('assets/style.css', __FILE__ ), [], $this->version, 'all' );
+            wp_enqueue_style($this->plugin_name, plugins_url("{$this->plugin_name}/public/assets/dist/css/{$this->plugin_name}-public.css"), [], $this->version, 'all' );
+            wp_enqueue_style("{$this->plugin_name}-style", plugins_url("{$this->plugin_name}/public/assets/style.css"), [], $this->version, 'all' );
         }
     }
 
@@ -92,7 +92,7 @@ class Fetch_Mailchimp_Fields_Public {
      */
     public function enqueue_scripts() {
         if (has_shortcode(get_post()->post_content, $this->shortcode_name)) {
-            wp_enqueue_script($this->plugin_name, plugins_url("assets/dist/js/{$this->plugin_name}-public.js", __FILE__ ), [], $this->version, true);
+            wp_enqueue_script($this->plugin_name, plugins_url("{$this->plugin_name}/public/assets/dist/js/{$this->plugin_name}-public.js"), [], $this->version, true);
         }
     }
 }
