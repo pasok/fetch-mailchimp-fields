@@ -3,7 +3,7 @@
   "name": "fetch-mailchimp-fields",
   "description": "Lookup a Subscriber in Mailchimp List and get their merge field details",
   "devDependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "cross-env": "^5.2.0",
     "laravel-mix": "^4.0.15",
     "laravel-mix-purgecss": "^4.1.0",
